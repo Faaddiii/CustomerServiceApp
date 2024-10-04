@@ -1,0 +1,11 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/CustomerServiceApp/obj/Debug/net8.0/CustomerServiceApp.AssemblyInfo.cs
+/CustomerServiceApp/obj/Debug/net8.0/CustomerServiceApp.AssemblyInfoInputs.cache
+/CustomerServiceApp/obj/Debug/net8.0/CustomerServiceApp.assets.cache
+/CustomerServiceApp/obj/Debug/net8.0/CustomerServiceApp.GeneratedMSBuildEditorConfig.editorconfig
+/CustomerServiceApp/obj/CustomerServiceApp.csproj.nuget.dgspec.json
+/CustomerServiceApp/obj/project.assets.json
+/CustomerServiceApp/obj/project.nuget.cache
