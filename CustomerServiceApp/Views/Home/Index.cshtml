@@ -1,0 +1,25 @@
+﻿@model IEnumerable<CustomerServiceApp.Models.Company>
+
+@{
+    Layout = "_DashboardLayout";
+    ViewData["Title"] = "Home Page";
+
+    // Convert the IEnumerable to a List so we can use Skip/Take methods
+    var companyList = Model.ToList();
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Here are the Top 10 Companies:</p>
+
+    <div class="row">
+        <div class="col-md-12">
+            @foreach (var company in companyList.Take(10)) // Get the first 10 companies
+            {
+                <a asp-controller="Company" asp-action="Details" asp-route-id="@company.CompanyID">
+                    <button type="button" class="btn btn-outline-warning btn-primary mb-2">@company.CompanyName</button>
+                </a>
+            }
+        </div>
+    </div>
+</div>

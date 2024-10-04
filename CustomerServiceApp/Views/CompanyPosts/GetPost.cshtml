@@ -1,0 +1,44 @@
+﻿@model IEnumerable<CustomerServiceApp.Models.CompanyPost>
+@{
+
+    ViewData["Title"] = "All Post";
+
+    // Convert the IEnumerable to a List so we can use Skip/Take methods
+    var companyPostList = Model.ToList();
+}
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Here are the available companies:</p>
+
+    <div class="row">
+        <div class="col-md-4">
+            @foreach (var companyPost in companyPostList.Skip(0).Take(10)) // First 10 companies
+            {
+                <div class="col-md-4 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">@companyPost.Title</h5>
+                            <p class="card-text">@companyPost.Description</p>
+                            <p class="card-text"><small class="text-muted">Created on: @companyPost.CreatedOn?.ToString("MM/dd/yyyy")</small></p>
+                            <p class="card-text">Featured: @companyPost.IsFeature</p>
+                            <a href="@Url.Action("Edit", "CompanyPosts", new { id = companyPost.Id })" class="btn btn-primary">Add Review</a>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-outline-warning" asp-controller="CompanyPosts" asp-action="AddPost" asp-route-id="@companyPost.Id class="btn btn-primary mb-2">Show Reviews</button>
+            }
+        </div>
+        <div class="col-md-4">
+            @foreach (var companyPost in companyPostList.Skip(10).Take(10)) // Next 10 companies
+            {
+                <button type="button" class="btn btn-outline-warning" asp-controller="CompanyPosts" asp-action="AddPost" asp-route-id="@companyPost.Id class="btn btn-primary mb-2">Show Reviews</button>
+            }
+        </div>
+        <div class="col-md-4">
+            @foreach (var companyPost in companyPostList.Skip(20).Take(10)) // Next 10 companies
+            {
+                <button type="button" class="btn btn-outline-warning" asp-controller="CompanyPosts" asp-action="AddPost" asp-route-id="@companyPost.Id class="btn btn-primary mb-2">@companyPost.Title</button>
+            }
+        </div>
+    </div>
+</div>
