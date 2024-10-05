@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using CustomerServiceApp.Models;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace CustomerServiceApp.Data
 {
     public class CustomerServiceAppContext : DbContext
     {
-        public CustomerServiceAppContext (DbContextOptions<CustomerServiceAppContext> options)
+        public CustomerServiceAppContext(DbContextOptions<CustomerServiceAppContext> options)
             : base(options)
         {
         }
 
-        public DbSet<CustomerServiceApp.Models.Company> Company { get; set; } = default!;
-        public DbSet<CustomerServiceApp.Models.CompanyPost> CompanyPost { get; set; } = default!;
-        public DbSet<CustomerServiceApp.Models.Review> Review { get; set; } = default!;
-        public DbSet<CustomerServiceApp.Models.Login> Logins { get; set; } = default!;
+        public DbSet<Models.Company> Company { get; set; } = default!;
+        public DbSet<Models.CompanyPost> CompanyPost { get; set; } = default!;
+        public DbSet<Models.Login> Logins { get; set; } = default!;
+        public DbSet<Models.CompanyReview> CompanyReviews { get; set; } = default!;
+        public DbSet<Models.PostReview> PostReviews { get; set; } = default!;
     }
 }

@@ -39,6 +39,14 @@ namespace CustomerServiceApp.Controllers
             return View(loginDto);
         }
 
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            ClientSession.ID = 0;
+            ClientSession.Username = "";
+            return View("Login");
+        }
+
         public async Task<IActionResult> Index()
         {
             var companies = await _context.Company.ToListAsync();

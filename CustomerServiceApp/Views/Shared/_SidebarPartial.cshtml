@@ -1,10 +1,8 @@
-﻿<div class="sidebar" data-background-color="dark">
+﻿
+<div class="sidebar" data-background-color="dark">
     <div class="sidebar-logo">
         <!-- Logo Header -->
         <div class="logo-header" data-background-color="dark">
-            <a href="index.html" class="logo">
-                <img src="assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20" />
-            </a>
             <div class="nav-toggle">
                 <button class="btn btn-toggle toggle-sidebar">
                     <i class="gg-menu-right"></i>
@@ -40,12 +38,49 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a asp-action="Index" asp-controller="PostReview">
+                    <a asp-action="Index" asp-controller="CompanyReviews">
                         <i class="fas fa-star"></i>
-                        <p>Review</p>
+                        <p>Company Reviews</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-action="Index" asp-controller="PostReviews">
+                        <i class="fas fa-star"></i>
+                        <p>Post Reviews</p>
                     </a>
                 </li>
             </ul>
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Toggle sidebar visibility
+        $('.toggle-sidebar').click(function () {
+            // Toggle a class to hide or show the sidebar
+            $('.sidebar').toggleClass('toggled');
+            $('.toggle-sidebar i').toggleClass('gg-menu-right gg-menu-left');
+        });
+
+        // If there's another toggler for sidenav
+        $('.sidenav-toggler').click(function () {
+            // Collapse or expand the sidebar
+            $('.sidebar').toggleClass('collapsed');
+            $('.sidenav-toggler i').toggleClass('gg-menu-left gg-menu-right');
+        });
+
+        // Adjust main-panel width when sidebar is toggled on small screens
+        function adjustMainPanel() {
+            if ($(window).width() < 768) {
+                $('.main-panel').css('margin-left', '0');
+            } else {
+                $('.main-panel').css('margin-left', $('.sidebar').hasClass('toggled') ? '0' : '250px');
+            }
+        }
+
+        // Handle window resize
+        $(window).resize(adjustMainPanel);
+        adjustMainPanel();
+    });
+</script>
