@@ -39,3 +39,4 @@
 /CustomerServiceApp/obj/Debug/net8.0/staticwebassets.build.json
 /CustomerServiceApp/obj/Debug/net8.0/staticwebassets.development.json
 /CustomerServiceApp/obj/Debug/net8.0/staticwebassets.pack.json
+*.vsidx
