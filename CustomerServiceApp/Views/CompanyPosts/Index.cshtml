@@ -1,59 +1,47 @@
 ﻿@model IEnumerable<CustomerServiceApp.Models.CompanyPost>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Company Posts Index";
+    Layout = "_DashboardLayout";
 }
 
-<h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsFeature)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedOn)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Company)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsFeature)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedOn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Company.CompanyName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h4 class="card-title mb-0">Company Posts</h4>
+            <a asp-action="Create" class="btn btn-outline-warning">Create New</a>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="display table table-striped table-hover" id="basic-datatables">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.First().Title)</th>
+                            <th>@Html.DisplayNameFor(model => model.First().Description)</th>
+                            <th>@Html.DisplayNameFor(model => model.First().IsFeature)</th>
+                            <th>@Html.DisplayNameFor(model => model.First().CompanyId)</th> <!-- Displaying company name -->
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                                <td>@Html.DisplayFor(modelItem => item.IsFeature)</td>
+                                <td>@Html.DisplayFor(modelItem => item.CompanyId)</td><!-- Displaying company name -->
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

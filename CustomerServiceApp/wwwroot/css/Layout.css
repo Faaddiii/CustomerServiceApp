@@ -1,6 +1,25 @@
 ﻿/* Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
+.content {
+    margin-top: 50px; /* Adjust this value as needed */
+    padding: 20px; /* Optional: Add padding for better spacing */
+    position: relative; /* Ensure the content is positioned correctly */
+    z-index: 1; /* Make sure it appears above other content */
+}
+.card {
+    margin: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
 
+.card-header {
+    background-color: #007bff;
+    color: white;
+}
+
+.card-footer {
+    text-align: right;
+}
 a.navbar-brand {
     white-space: normal;
     text-align: center;
