@@ -1,12 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using CustomerServiceApp.Data;
+using CustomerServiceApp.Utilities;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<CustomerServiceAppContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("CustomerServiceAppContext") ?? throw new InvalidOperationException("Connection string 'CustomerServiceAppContext' not found.")));
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
+
 
 var app = builder.Build();
 
@@ -23,13 +24,16 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+
 app.UseAuthorization();
+
+
 
 //app.MapControllerRoute(
 //    name: "default",
 //    pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Login}/{id?}");
+    pattern: "{controller=Auth}/{action=Login}/{id?}");
 
 app.Run();

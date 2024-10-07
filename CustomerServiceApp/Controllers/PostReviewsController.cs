@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using CustomerServiceApp.Data;
+﻿using CustomerServiceApp.Data;
 using CustomerServiceApp.Models;
+using CustomerServiceApp.Utilities;
+using CustomerServiceApp.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CustomerServiceApp.Controllers
 {
+    [SessionCheck]
     public class PostReviewsController : Controller
     {
         private readonly CustomerServiceAppContext _context;
@@ -22,7 +20,22 @@ namespace CustomerServiceApp.Controllers
         // GET: PostReviews
         public async Task<IActionResult> Index()
         {
-            return View(await _context.PostReviews.ToListAsync());
+            var companyReviews = from cr in _context.PostReviews
+                                 join c in _context.CompanyPost on cr.PostId equals c.Id
+                                 select new PostReviewViewModel
+                                 {
+                                     ReviewID = cr.ReviewID,
+                                     OverallRating = cr.OverallRating,
+                                     Title = cr.Title,
+                                     Comments = cr.Comments,
+                                     Name = cr.Name,
+                                     Email = cr.Email,
+                                     PostId = c.Id,
+                                     PostTitle = c.Title,
+                                     CreatedAt = cr.CreatedAt
+                                 };
+
+            return View(await companyReviews.ToListAsync());
         }
 
         // GET: PostReviews/Details/5
@@ -33,14 +46,9 @@ namespace CustomerServiceApp.Controllers
                 return NotFound();
             }
 
-            var postReview = await _context.PostReviews
+            PostReview? postReview = await _context.PostReviews
                 .FirstOrDefaultAsync(m => m.ReviewID == id);
-            if (postReview == null)
-            {
-                return NotFound();
-            }
-
-            return View(postReview);
+            return postReview == null ? NotFound() : View(postReview);
         }
 
         // GET: PostReviews/Create
@@ -58,8 +66,8 @@ namespace CustomerServiceApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(postReview);
-                await _context.SaveChangesAsync();
+                _=_context.Add(postReview);
+                _=await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(postReview);
@@ -73,12 +81,8 @@ namespace CustomerServiceApp.Controllers
                 return NotFound();
             }
 
-            var postReview = await _context.PostReviews.FindAsync(id);
-            if (postReview == null)
-            {
-                return NotFound();
-            }
-            return View(postReview);
+            PostReview? postReview = await _context.PostReviews.FindAsync(id);
+            return postReview == null ? NotFound() : View(postReview);
         }
 
         // POST: PostReviews/Edit/5
@@ -97,8 +101,8 @@ namespace CustomerServiceApp.Controllers
             {
                 try
                 {
-                    _context.Update(postReview);
-                    await _context.SaveChangesAsync();
+                    _=_context.Update(postReview);
+                    _=await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -124,14 +128,9 @@ namespace CustomerServiceApp.Controllers
                 return NotFound();
             }
 
-            var postReview = await _context.PostReviews
+            PostReview? postReview = await _context.PostReviews
                 .FirstOrDefaultAsync(m => m.ReviewID == id);
-            if (postReview == null)
-            {
-                return NotFound();
-            }
-
-            return View(postReview);
+            return postReview == null ? NotFound() : View(postReview);
         }
 
         // POST: PostReviews/Delete/5
@@ -139,13 +138,13 @@ namespace CustomerServiceApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var postReview = await _context.PostReviews.FindAsync(id);
+            PostReview? postReview = await _context.PostReviews.FindAsync(id);
             if (postReview != null)
             {
-                _context.PostReviews.Remove(postReview);
+                _=_context.PostReviews.Remove(postReview);
             }
 
-            await _context.SaveChangesAsync();
+            _=await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

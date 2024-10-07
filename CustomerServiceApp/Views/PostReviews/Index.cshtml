@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CustomerServiceApp.Models.PostReview>
+﻿@model IEnumerable<CustomerServiceApp.ViewModels.PostReviewViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -7,9 +7,6 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -29,12 +26,12 @@
                 @Html.DisplayNameFor(model => model.Email)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PostId)
+                @Html.DisplayNameFor(model => model.PostTitle)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CreatedAt)
             </th>
-            <th></th>
+            @* <th></th> *@
         </tr>
     </thead>
     <tbody>
@@ -56,16 +53,16 @@
                 @Html.DisplayFor(modelItem => item.Email)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PostId)
+                    @Html.DisplayFor(modelItem => item.PostTitle)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedAt)
             </td>
-            <td>
+            @* <td>
                 <a asp-action="Edit" asp-route-id="@item.ReviewID">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.ReviewID">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.ReviewID">Delete</a>
-            </td>
+            </td> *@
         </tr>
 }
     </tbody>

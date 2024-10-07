@@ -2,7 +2,8 @@
 {
     public static class ClientSession
     {
-        public static string Username = "";
-        public static int ID = 0;
+        public static string Username { get; set; } = "";
+        public static int ID { get; set; } = 0;
     }
+
 }

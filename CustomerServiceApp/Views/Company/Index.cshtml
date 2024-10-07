@@ -5,9 +5,6 @@
     Layout = "_DashboardLayout";
 }
 
-<p>
-   
-</p>
 <div class="col-md-12">
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
@@ -42,6 +39,7 @@
                                 <td>@Html.DisplayFor(modelItem => item.Telephone)</td>
                                 <td>@Html.DisplayFor(modelItem => item.WebsiteURL)</td>
                                 <td>
+                                    <a asp-action="AddReview" asp-route-id="@item.CompanyID">Add Review</a> |
                                     <a asp-action="Edit" asp-route-id="@item.CompanyID">Edit</a> |
                                     <a asp-action="Details" asp-route-id="@item.CompanyID">Details</a> |
                                     <a asp-action="Delete" asp-route-id="@item.CompanyID">Delete</a>

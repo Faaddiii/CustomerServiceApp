@@ -1,11 +1,14 @@
 ﻿using CustomerServiceApp.Data;
+using CustomerServiceApp.Dtos;
 using CustomerServiceApp.Models;
+using CustomerServiceApp.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace CustomerServiceApp.Controllers
 {
+    [SessionCheck]
     public class CompanyPostsController : Controller
     {
         private readonly CustomerServiceAppContext _context;
@@ -152,9 +155,63 @@ namespace CustomerServiceApp.Controllers
                 return NotFound();
             }
 
-            var companyPost = await _context.CompanyPost.Where(x => x.CompanyId == companyID).ToListAsync();
+            List<CompanyPost> companyPost = await _context.CompanyPost.Where(x => x.CompanyId == companyID).ToListAsync();
 
             return View(companyPost);
+        }
+
+        // GET: CompanyPost/AddReview/5
+        public async Task<IActionResult> AddReview(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            CompanyPost? company = await _context.CompanyPost.FindAsync(id);
+            AddCompanyPostReviewDto dto = new()
+            {
+                Comments = "",
+                Email = "",
+                Name = "",
+                Title = "",
+                CompanyPostName = company.Title,
+                CompanyPostId = company.Id
+            };
+            return company == null ? NotFound() : View(dto);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddReview(AddCompanyPostReviewDto model)
+        {
+            if (!ModelState.IsValid)
+            {
+                // Re-render the form with the validation errors.
+                return View(model);
+            }
+
+            CompanyPost? company = await _context.CompanyPost.FindAsync(model.CompanyPostId);
+            if (company == null)
+            {
+                return NotFound();
+            }
+
+            PostReview review = new()
+            {
+                OverallRating = model.OverallRating,
+                Title = model.Title,
+                Comments = model.Comments,
+                Name = model.Name,
+                Email = model.Email,
+                PostId = model.CompanyPostId,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            _=_context.PostReviews.Add(review);
+            _=await _context.SaveChangesAsync();
+
+            return RedirectToAction("Details", "CompanyPosts", new { id = model.CompanyPostId });
         }
 
 

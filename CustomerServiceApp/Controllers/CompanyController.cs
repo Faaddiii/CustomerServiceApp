@@ -1,10 +1,13 @@
 ﻿using CustomerServiceApp.Data;
+using CustomerServiceApp.Dtos;
 using CustomerServiceApp.Models;
+using CustomerServiceApp.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace CustomerServiceApp.Controllers
 {
+    [SessionCheck]
     public class CompanyController : Controller
     {
         private readonly CustomerServiceAppContext _context;
@@ -129,6 +132,62 @@ namespace CustomerServiceApp.Controllers
             _=await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+        // GET: Company/AddReview/5
+        public async Task<IActionResult> AddReview(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Company? company = await _context.Company.FindAsync(id);
+            AddCompanyReviewDto dto = new()
+            {
+                Comments = "",
+                Email = "",
+                Name = "",
+                Title = "",
+                CompanyId = company.CompanyID,
+                CompanyName = company.CompanyName
+            };
+            return company == null ? NotFound() : View(dto);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddReview(AddCompanyReviewDto model)
+        {
+            if (!ModelState.IsValid)
+            {
+                // Re-render the form with the validation errors.
+                return View(model);
+            }
+
+            Company? company = await _context.Company.FindAsync(model.CompanyId);
+            if (company == null)
+            {
+                return NotFound();
+            }
+
+            CompanyReview review = new()
+            {
+                OverallRating = model.OverallRating,
+                Title = model.Title,
+                Comments = model.Comments,
+                Name = model.Name,
+                Email = model.Email,
+                CompanyId = model.CompanyId,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            _=_context.CompanyReviews.Add(review);
+            _=await _context.SaveChangesAsync();
+
+            return RedirectToAction("Details", "Company", new { id = model.CompanyId });
+        }
+
+
 
         private bool CompanyExists(int id)
         {

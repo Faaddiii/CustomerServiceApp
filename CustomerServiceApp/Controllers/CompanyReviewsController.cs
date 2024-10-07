@@ -1,10 +1,13 @@
 ﻿using CustomerServiceApp.Data;
 using CustomerServiceApp.Models;
+using CustomerServiceApp.Utilities;
+using CustomerServiceApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace CustomerServiceApp.Controllers
 {
+    [SessionCheck]
     public class CompanyReviewsController : Controller
     {
         private readonly CustomerServiceAppContext _context;
@@ -17,8 +20,24 @@ namespace CustomerServiceApp.Controllers
         // GET: CompanyReviews
         public async Task<IActionResult> Index()
         {
-            return View(await _context.CompanyReviews.ToListAsync());
+            var companyReviews = from cr in _context.CompanyReviews
+                                 join c in _context.Company on cr.CompanyId equals c.CompanyID
+                                 select new CompanyReviewViewModel
+                                 {
+                                     ReviewID = cr.ReviewID,
+                                     OverallRating = cr.OverallRating,
+                                     Title = cr.Title,
+                                     Comments = cr.Comments,
+                                     Name = cr.Name,
+                                     Email = cr.Email,
+                                     CompanyId = c.CompanyID,
+                                     CompanyName = c.CompanyName,
+                                     CreatedAt = cr.CreatedAt
+                                 };
+
+            return View(await companyReviews.ToListAsync());
         }
+
 
         // GET: CompanyReviews/Details/5
         public async Task<IActionResult> Details(int? id)

@@ -1,5 +1,6 @@
 using CustomerServiceApp.Data;
 using CustomerServiceApp.Models;
+using CustomerServiceApp.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -7,6 +8,7 @@ using System.Diagnostics;
 
 namespace CustomerServiceApp.Controllers
 {
+    [SessionCheck]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -15,36 +17,6 @@ namespace CustomerServiceApp.Controllers
         {
             _logger = logger;
             _context = customerServiceAppContext;
-        }
-
-        [HttpGet]
-        public IActionResult Login()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Login(LoginDto loginDto)
-        {
-            // Simple validation logic
-            var user = await _context.Logins.Where(x => x.Username.ToLower() == loginDto.Username.ToLower() && x.Password == loginDto.Password).FirstOrDefaultAsync();
-            if (user != null)
-            {
-                ClientSession.Username = user.Username;
-                ClientSession.ID = user.ID;
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.Message = "Invalid credentials";
-            return View(loginDto);
-        }
-
-        [HttpGet]
-        public IActionResult Logout()
-        {
-            ClientSession.ID = 0;
-            ClientSession.Username = "";
-            return View("Login");
         }
 
         public async Task<IActionResult> Index()
