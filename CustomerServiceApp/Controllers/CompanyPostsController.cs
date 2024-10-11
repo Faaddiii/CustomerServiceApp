@@ -39,12 +39,25 @@ namespace CustomerServiceApp.Controllers
             return companyPost == null ? NotFound() : View(companyPost);
         }
 
-        // GET: CompanyPosts/Create
         public IActionResult Create()
         {
-            ViewData["CompanyId"] = new SelectList(_context.Company, "CompanyID", "CompanyName");
+            var companies = _context.Company.ToList(); // Retrieve companies from database
+
+            if (companies == null || !companies.Any())
+            {
+                // If no companies are found, return an error view or an empty list
+                ViewBag.CompanyId = new SelectList(Enumerable.Empty<Company>(), "CompanyID", "CompanyName");
+            }
+            else
+            {
+                // Populate the SelectList with the companies
+                ViewBag.CompanyId = new SelectList(companies, "CompanyID", "CompanyName");
+            }
+
             return View();
         }
+
+
 
         // POST: CompanyPosts/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.

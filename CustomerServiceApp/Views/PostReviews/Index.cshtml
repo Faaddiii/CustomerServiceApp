@@ -5,65 +5,72 @@
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
 }
 
-<h1>Index</h1>
+<div class="container mt-4">
+    <!-- Search Bar -->
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <input type="text" class="form-control" placeholder="Search reviews..." id="reviewSearch" />
+        </div>
+    </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.OverallRating)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Comments)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PostTitle)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedAt)
-            </th>
-            @* <th></th> *@
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.OverallRating)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Comments)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                    @Html.DisplayFor(modelItem => item.PostTitle)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            @* <td>
-                <a asp-action="Edit" asp-route-id="@item.ReviewID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ReviewID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ReviewID">Delete</a>
-            </td> *@
-        </tr>
-}
-    </tbody>
-</table>
+    <!-- Sort and Filter Options -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <select class="form-control" id="sortReviews">
+                <option>Most Recent</option>
+                <option>Oldest First</option>
+            </select>
+        </div>
+        <div class="col-md-6">
+            <select class="form-control" id="filterByStars">
+                <option>All Stars</option>
+                <option>5 stars</option>
+                <option>4 stars</option>
+                <option>3 stars</option>
+                <option>2 stars</option>
+                <option>1 star</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Review List -->
+    @foreach (var review in Model)
+    {
+        <div class="card mb-4">
+            <div class="card-body">
+                <!-- Review Title -->
+                <h5 class="card-title">@review.Title</h5>
+
+                <!-- Rating and Date -->
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div>
+                        @for (var i = 0; i < review.OverallRating; i++)
+                        {
+                            <span class="fa fa-star text-warning"></span>
+                        }
+                        @for (var i = review.OverallRating; i < 5; i++)
+                        {
+                            <span class="fa fa-star-o text-muted"></span>
+                        }
+                    </div>
+                    <div>
+                        <small class="text-muted">@review.CreatedAt.ToString("MMMM d, yyyy")</small>
+                    </div>
+                </div>
+
+                <!-- Review Content -->
+                <p>@review.Comments</p>
+
+                <!-- Reviewer Info -->
+                <div class="d-flex align-items-center">
+                    <i class="fa fa-user"></i>
+                    <div>
+                        <strong>@review.Name</strong>
+                        <br />
+                        <small class="text-muted">@review.Email</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
