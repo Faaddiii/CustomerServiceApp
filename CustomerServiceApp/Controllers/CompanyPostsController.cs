@@ -54,7 +54,7 @@ namespace CustomerServiceApp.Controllers
                 ViewBag.CompanyId = new SelectList(companies, "CompanyID", "CompanyName");
             }
 
-            return View();
+            return View(new CompanyPost());
         }
 
 

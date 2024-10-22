@@ -13,34 +13,37 @@
     <h4>CompanyPost</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Title)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Title)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Description)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
+        <dd class="col-sm-10">
+            <!-- Use a div to display the description -->
+            <div class="summernote" style="display: none;">
+                @Html.Raw(Model.Description)
+            </div>
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.IsFeature)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.IsFeature)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.CreatedOn)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.CreatedOn)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Company)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Company.CompanyName)
         </dd>
     </dl>
@@ -49,3 +52,41 @@
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+            // Initialize summernote
+            $('.summernote').summernote({
+                height: 200, // Set editor height
+                toolbar: [ // Customize toolbar options
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough', 'superscript', 'subscript']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['height', ['height']],
+                    ['insert', ['picture', 'link']],
+                    ['view', ['fullscreen', 'codeview', 'help']]
+                ],
+                // Disable editing options
+                editable: false,
+                contenteditable: false,
+                buttons: {
+                    // Remove all buttons for non-editable mode
+                    style: { title: 'Styles', icon: 'icon', hide: true },
+                    font: { title: 'Font', icon: 'icon', hide: true },
+                    color: { title: 'Color', icon: 'icon', hide: true },
+                    para: { title: 'Paragraph', icon: 'icon', hide: true },
+                    insert: { title: 'Insert', icon: 'icon', hide: true },
+                    view: { title: 'View', icon: 'icon', hide: true }
+                }
+            });
+
+            // Set the content of summernote to the existing Description
+            $('.summernote').summernote('code', $('.summernote').html());
+        });
+    </script>
+}

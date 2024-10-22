@@ -24,7 +24,13 @@ namespace CustomerServiceApp.Controllers
         {
             return await _context.Company.ToListAsync();
         }
+        [HttpGet("GetCompany/{id}")]
+        public async Task<ActionResult<Company>> GetCompany(int id)
+        {
+            var posts = await _context.Company.Where(c => c.CompanyID == id).FirstOrDefaultAsync();
 
+            return posts == null ? (ActionResult<Company>)NotFound() : (ActionResult<Company>)posts;
+        }
 
         // GET: api/ApiCompanies/5
         [HttpGet("GetAllCompanyPost/{id}")]
@@ -45,7 +51,7 @@ namespace CustomerServiceApp.Controllers
                                  select new CompanyReviewViewModel
                                  {
                                      ReviewID = cr.ReviewID,
-                                     OverallRating = cr.OverallRating,
+                                     OverallRating = (int)cr.OverallRating,
                                      Title = cr.Title,
                                      Comments = cr.Comments,
                                      Name = cr.Name,
@@ -60,6 +66,44 @@ namespace CustomerServiceApp.Controllers
                 (ActionResult<IEnumerable<CompanyReviewViewModel>>)NotFound() :
                 (ActionResult<IEnumerable<CompanyReviewViewModel>>)await companyReviews.ToListAsync();
         }
+
+
+        [HttpGet("GetPostById/{id}")]
+        public async Task<ActionResult<CompanyPost>> GetPostById(int id)
+        {
+            var posts = await _context.CompanyPost.Include(x => x.Company).Where(c => c.Id == id).FirstOrDefaultAsync();
+
+            return posts == null ? (ActionResult<CompanyPost>)NotFound() : (ActionResult<CompanyPost>)posts;
+        }
+
+        [HttpGet("GetPostReviews/{id}")]
+        public async Task<ActionResult<IEnumerable<PostReviewViewModel>>> GetPostReviews(int id)
+        {
+            var companyReviews = from cr in _context.PostReviews
+                                 join c in _context.CompanyPost on cr.PostId equals c.Id
+                                 where c.Id == id
+                                 select new PostReviewViewModel
+                                 {
+                                     ReviewID = cr.ReviewID,
+                                     OverallRating = (int)cr.OverallRating,
+                                     Title = cr.Title,
+                                     Comments = cr.Comments,
+                                     Name = cr.Name,
+                                     Email = cr.Email,
+                                     PostId = c.Id,
+                                     PostTitle = c.Title,
+                                     CreatedAt = cr.CreatedAt
+                                 };
+
+
+            return await companyReviews.ToListAsync() == null ?
+                (ActionResult<IEnumerable<PostReviewViewModel>>)NotFound() :
+                (ActionResult<IEnumerable<PostReviewViewModel>>)await companyReviews.ToListAsync();
+        }
+
+
+
+
 
         // PUT: api/ApiCompanies/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

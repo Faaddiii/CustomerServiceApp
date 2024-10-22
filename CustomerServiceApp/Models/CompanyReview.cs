@@ -11,7 +11,7 @@ namespace CustomerServiceApp.Models
 
         [Range(1, 5)]
         [Required]
-        public int OverallRating { get; set; }
+        public decimal OverallRating { get; set; }
 
         [Required]
         [MaxLength(255)]

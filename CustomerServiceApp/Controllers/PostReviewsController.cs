@@ -25,7 +25,7 @@ namespace CustomerServiceApp.Controllers
                                  select new PostReviewViewModel
                                  {
                                      ReviewID = cr.ReviewID,
-                                     OverallRating = cr.OverallRating,
+                                     OverallRating = (int)cr.OverallRating,
                                      Title = cr.Title,
                                      Comments = cr.Comments,
                                      Name = cr.Name,

@@ -11,7 +11,7 @@ namespace CustomerServiceApp.Models
 
         [Range(1, 5)]
         [Required]
-        public int OverallRating { get; set; }
+        public decimal OverallRating { get; set; }
 
         [Required]
         [MaxLength(255)]
@@ -29,6 +29,7 @@ namespace CustomerServiceApp.Models
 
         [Required]
         public int PostId { get; set; }
+        public string Attachment { get; set; } // Store the filename if you're saving the photo
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
     }

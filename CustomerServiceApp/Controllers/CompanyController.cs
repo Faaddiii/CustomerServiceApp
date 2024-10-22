@@ -39,7 +39,7 @@ namespace CustomerServiceApp.Controllers
         // GET: CreateCompany/Create
         public IActionResult Create()
         {
-            return View();
+            return View(new Company());
         }
 
         // POST: CreateCompany/Create
